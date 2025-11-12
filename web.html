@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Қайырымдылық жобасы</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #a3d5ff, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 320px;
+    }
+
+    h1, h2 {
+      color: #0077b6;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #0077b6;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #005f87;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    label {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      margin-top: 5px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    form button {
+      margin-top: 15px;
+      background-color: #00b4d8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="start">
+    <h1>Қосылғың келе ме?</h1>
+    <div class="buttons">
+      <button id="yesBtn">Иә</button>
+      <button id="noBtn">Жоқ</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="formContainer">
+    <h2>Толықтыр:</h2>
+    <form id="joinForm">
+      <label>Атың:</label>
+      <input type="text" id="name" required>
+
+      <label>Тегің:</label>
+      <input type="text" id="surname" required>
+
+      <label>Сыныбың:</label>
+      <input type="text" id="class" required>
+
+      <label>Мақсатың:</label>
+      <textarea id="goal" rows="3" required></textarea>
+
+      <button type="submit">Жіберу</button>
+    </form>
+  </div>
+
+  <div class="container hidden" id="thanksContainer">
+    <h2>Рақмет! 💖</h2>
+    <p>Мәлімет сәтті сақталды!</p>
+  </div>
+
+  <div class="container hidden" id="byeContainer">
+    <h2>Жарайды 😊</h2>
+    <p>Келесі жолы кездескенше!</p>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const start = document.getElementById("start");
+    const formContainer = document.getElementById("formContainer");
+    const joinForm = document.getElementById("joinForm");
+    const thanksContainer = document.getElementById("thanksContainer");
+    const byeContainer = document.getElementById("byeContainer");
+
+    // ТӨМЕНДЕГІ URL-ды өз Google Script URL-мен алмастыр!
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZAkgTlo_g9FJ3S6FHmk4RSIMWGDDInPIQ7xnwIR9NVfnnDmclCkpkgAmCCKPjA_kXSg/exec";
+
+    yesBtn.onclick = () => {
+      start.classList.add("hidden");
+      formContainer.classList.remove("hidden");
+    };
+
+    noBtn.onclick = () => {
+      start.classList.add("hidden");
+      byeContainer.classList.remove("hidden");
+    };
+
+    joinForm.onsubmit = async (e) => {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById("name").value,
+        surname: document.getElementById("surname").value,
+        class: document.getElementById("class").value,
+        goal: document.getElementById("goal").value
+      };
+
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      });
+
+      formContainer.classList.add("hidden");
+      thanksContainer.classList.remove("hidden");
+    };
+  </script>
+
+</body>
+</html>
